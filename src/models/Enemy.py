@@ -4,10 +4,10 @@ from models.enums.EnumMap import MAP_FREE
 from models.Cell import Cell
 
 map_1 = np.array([[3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                  [0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0],
+                  [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0],
                   [0, 1, 0, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                   [0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                  [0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                  [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                   [0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                   [0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                   [0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -44,31 +44,43 @@ class Enemy(AbstractCharacter):
         pos_x_aux, pos_y_aux = self.expansions[0].x, self.expansions[0].y
 
         while len(self.expansions) > 0:
-
+            print("Tamanho da fila no começo: ", len(self.expansions))
             if pos_x_aux == pos_xp and pos_y_aux == pos_yp:
-                return self.expansions
+                return "Encontrado"
 
             if pos_x_aux < 19 and map_1[pos_x_aux + 1][pos_y_aux] == MAP_FREE:
                 map_1[pos_x_aux + 1][pos_y_aux] = -1
+                print("Entrou na: x+1")
                 self.expansions.append(
                     Cell(pos_x_aux + 1, pos_y_aux, True, self.expansions[0]))
+                for x in self.expansions:
+                    print("Expandiu para", " - ",x.x, x.y, x.was_visited)
 
             if pos_x_aux > 0 and map_1[pos_x_aux - 1][pos_y_aux] == MAP_FREE:
                 map_1[pos_x_aux - 1][pos_y_aux] = -1
+                print("Entrou na: x-1")
                 self.expansions.append(
                     Cell(pos_x_aux - 1, pos_y_aux, True, self.expansions[0]))
+                for x in self.expansions:
+                    print("Expandiu para", " - ",x.x, x.y, x.was_visited)
 
             if pos_y_aux < 19 and map_1[pos_x_aux][pos_y_aux + 1] == MAP_FREE:
                 map_1[pos_x_aux][pos_y_aux + 1] = -1
+                print("Entrou na: y+1")
                 self.expansions.append(
                     Cell(pos_x_aux, pos_y_aux + 1, True, self.expansions[0]))
+                for x in self.expansions:
+                    print("Expandiu para", " - ",x.x, x.y, x.was_visited)
 
             if pos_y_aux > 0 and map_1[pos_x_aux][pos_y_aux - 1] == MAP_FREE:
                 map_1[pos_x_aux][pos_y_aux-1] = -1
+                print("Entrou na: y-1")
                 self.expansions.append(
                     Cell(pos_x_aux, pos_y_aux - 1, True, self.expansions[0]))
+                for x in self.expansions:
+                    print("Expandiu para", " - ",x.x, x.y, x.was_visited)
 
-            pos_x_aux, pos_y_aux = self.expansions[0].x, self.expansions[0].y
-            print(pos_x_aux, pos_y_aux)
-            print(map_1)
+            print("Tamanho da fila no final: ", len(self.expansions))
             self.expansions.pop(0)
+            print()
+            pos_x_aux, pos_y_aux = self.expansions[0].x, self.expansions[0].y
