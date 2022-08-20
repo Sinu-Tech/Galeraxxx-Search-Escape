@@ -8,3 +8,5 @@ class Player(AbstractCharacter):
 
     def died(self):
         self.is_alive = False
+
+# falta colocar restrição de colisões com os limites do mapa

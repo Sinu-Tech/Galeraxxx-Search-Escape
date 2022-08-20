@@ -22,4 +22,3 @@ class AbstractCharacter(metaclass=ABCMeta):
         elif direction == 'right':
             self.pos_x += 1
 
-# falta colocar restrição de colisões com os limites do mapa

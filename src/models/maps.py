@@ -29,4 +29,4 @@ map_2 = np.array([[3, 0, 0, 0, 0],
                   [0, 1, 0, 1, 0],
                   [1, 1, 0, 0, 0]])
 
-game_map = map_1
+game_map = map_2

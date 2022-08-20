@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def better_index(expansions: list):
+def less_h_index(expansions: list):
     better_index = 0
     better_f = expansions[0].f
     for index, e in enumerate(expansions):
@@ -12,7 +12,7 @@ def better_index(expansions: list):
 
 
 def get_distance(x_aux: int, y_aux: int, pos_xp: int, pos_yp: int):
-    # return ((pos_xp - x_aux) ** 2 + (pos_yp - y_aux) ** 2) ** (1 / 2)
+    # return ((pos_xp - x_aux) ** 2 + (pos_yp - y_aux) ** 2) ** (1 / 2) # Distancia euclidiana (não usar se não saber para que serve)
     return abs(pos_xp - x_aux) + abs(pos_yp - y_aux)
 
 
