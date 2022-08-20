@@ -1,9 +1,11 @@
+from cmath import exp
 import numpy as np
 from .abs_class.AbstractModel import AbstractCharacter
 from .Cell import *
+from .enums.EnumMap import *
 
 map_1 = np.array([[3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                  [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0],
+                  [0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0],
                   [0, 1, 0, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                   [0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                   [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -20,8 +22,18 @@ map_1 = np.array([[3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                   [0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                   [0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                   [0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                  [0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                  [0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1],
                   [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]])
+
+
+def better_index(expansions: list):
+    better_index = 0
+    better_f = expansions[0].f
+    for index, e in enumerate(expansions):
+        if e.f < better_f:
+            better_f = e.f
+            better_index = index
+    return better_index
 
 
 class Enemy(AbstractCharacter):
@@ -31,72 +43,88 @@ class Enemy(AbstractCharacter):
         for x in range(0, 20):
             temp = []
             for y in range(0, 20):
-                temp.append(Cell(x, y, False, None))
+                temp.append(Cell(x, y, 0, 0, 0, False, None))
             self.map_h.append(temp)
         self.expansions = []
 
-    def update_maph(self, pos_xp: int, pos_yp: int):
+    def update_map_fh(self, pos_xp: int, pos_yp: int):
         for y in range(0, 20):
             for x in range(0, 20):
                 self.map_h[y][x].h = abs(pos_xp - x) + abs(pos_yp - y)
-                # print(y, x)
-                # print(self.map_h[y, x].h, self.map_h[y, x].x, self.map_h[y, x].y)
 
     def print_maph(self):
+        print("f")
         for i in range(0, 20):
             for j in range(0, 20):
-                print(self.map_h[j, i].h)
-        print(self.map_h.shape)
+                print(self.map_h[i][j].f, end=" ")
+            print("")
+        print("g")
+        for i in range(0, 20):
+            for j in range(0, 20):
+                print(self.map_h[i][j].g, end=" ")
+            print("")
+        print("h")
+        for i in range(0, 20):
+            for j in range(0, 20):
+                print(self.map_h[i][j].h, end=" ")
+            print("")
 
-    # def get_bigger_expansion(expansions):
-    #     biggest_expansion = 0
-    #     for expansion in expansions:
-
-    #         if expansion > biggest_expansion:
-    #             biggest_expansion = expansion
-    #     return biggest_expansion
+    def print_expansions(self):
+        for e in self.expansions:
+            print(e.x, e.y, e.f, e.g, e.h)
 
     def get_expansions(self, pos_xp: int, pos_yp: int):
-        self.expansions.append(Cell(self.pos_x, self.pos_y, True, None))
-        pos_x_aux, pos_y_aux = self.expansions[0].x, self.expansions[0].y
+        self.expansions.append(self.map_h[self.pos_x][self.pos_y])
+        x_aux, y_aux = self.expansions[0].x, self.expansions[0].y
+        index = better_index(self.expansions)
 
-        while len(self.expansions) > 0 and self.expansions[0].x != pos_xp and self.expansions[0].y != pos_yp:
-            print("Tamanho da fila no começo: ", len(self.expansions))
+        while len(self.expansions) > 0 and (self.expansions[index].x != pos_xp or self.expansions[index].y != pos_yp):
 
-            if pos_x_aux < 19 and map_1[pos_x_aux + 1][pos_y_aux] == MAP_FREE:
-                map_1[pos_x_aux + 1][pos_y_aux] = -1
-                print("Entrou na: x+1")
+            # down
+            if x_aux < 19 and map_1[x_aux + 1][y_aux] == MAP_FREE and self.map_h[x_aux + 1][y_aux].was_visited == False:
+                map_1[x_aux + 1][y_aux] = -1
+                g = self.map_h[x_aux][y_aux].g + 1
+                h = self.map_h[x_aux][y_aux].h
+                f = g + h
+                self.map_h[x_aux+1][y_aux].g = g
+                self.map_h[x_aux+1][y_aux].f = f
                 self.expansions.append(
-                    Cell(pos_x_aux + 1, pos_y_aux, True, self.expansions[0]))
-                for x in self.expansions:
-                    print("Expandiu para", " - ", x.x, x.y, x.was_visited)
-
-            if pos_x_aux > 0 and map_1[pos_x_aux - 1][pos_y_aux] == MAP_FREE:
-                map_1[pos_x_aux - 1][pos_y_aux] = -1
-                print("Entrou na: x-1")
+                    Cell(x_aux + 1, y_aux, f, g, h, True, self.expansions[index]))
+            # up
+            if x_aux > 0 and map_1[x_aux - 1][y_aux] == MAP_FREE and self.map_h[x_aux - 1][y_aux].was_visited == False:
+                map_1[x_aux - 1][y_aux] = -1
+                g = self.map_h[x_aux][y_aux].g + 1
+                self.map_h[x_aux-1][y_aux].g = g
+                h = self.map_h[x_aux-1][y_aux].h
+                f = g + h
+                self.map_h[x_aux-1][y_aux].f = f
                 self.expansions.append(
-                    Cell(pos_x_aux - 1, pos_y_aux, True, self.expansions[0]))
-                for x in self.expansions:
-                    print("Expandiu para", " - ", x.x, x.y, x.was_visited)
-
-            if pos_y_aux < 19 and map_1[pos_x_aux][pos_y_aux + 1] == MAP_FREE:
-                map_1[pos_x_aux][pos_y_aux + 1] = -1
-                print("Entrou na: y+1")
+                    Cell(x_aux - 1, y_aux, f, g, h, True, self.expansions[index]))
+            # right
+            if y_aux < 19 and map_1[x_aux][y_aux + 1] == MAP_FREE and self.map_h[x_aux ][y_aux+1].was_visited == False:
+                map_1[x_aux][y_aux + 1] = -1
+                g = self.map_h[x_aux][y_aux].g + 1
+                self.map_h[x_aux][y_aux+1].g = g
+                h = self.map_h[x_aux][y_aux+1].h
+                f = g + h
+                self.map_h[x_aux][y_aux + 1].f = f
                 self.expansions.append(
-                    Cell(pos_x_aux, pos_y_aux + 1, True, self.expansions[0]))
-                for x in self.expansions:
-                    print("Expandiu para", " - ", x.x, x.y, x.was_visited)
-
-            if pos_y_aux > 0 and map_1[pos_x_aux][pos_y_aux - 1] == MAP_FREE:
-                map_1[pos_x_aux][pos_y_aux - 1] = -1
-                print("Entrou na: y-1")
+                    Cell(x_aux, y_aux + 1, f, g, h, True, self.expansions[index]))
+            # lef
+            if y_aux > 0 and map_1[x_aux][y_aux - 1] == MAP_FREE and self.map_h[x_aux][y_aux-1].was_visited == False:
+                map_1[x_aux][y_aux - 1] = -1
+                g = self.map_h[x_aux][y_aux].g + 1
+                self.map_h[x_aux][y_aux+1].g = g
+                h = self.map_h[x_aux][y_aux-1].h
+                f = g + h
+                self.map_h[x_aux][y_aux - 1].f = f
                 self.expansions.append(
-                    Cell(pos_x_aux, pos_y_aux - 1, True, self.expansions[0]))
-                for x in self.expansions:
-                    print("Expandiu para", " - ", x.x, x.y, x.was_visited)
+                    Cell(x_aux, y_aux + 1, f, g, h, True, self.expansions[index]))
 
-            print("Tamanho da fila no final: ", len(self.expansions))
-            print(map_1)
-            self.expansions.pop(0)
-            print()
-            pos_x_aux, pos_y_aux = self.expansions[0].x, self.expansions[0].y
+            self.expansions.pop(index)
+            if len(self.expansions) > 0:
+                index = better_index(self.expansions)
+                x_aux, y_aux = self.expansions[index].x, self.expansions[index].y
+                if self.expansions[index].x == pos_xp and self.expansions[index].y == pos_yp:
+                    return self.expansions[index]
+
