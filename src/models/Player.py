@@ -1,4 +1,4 @@
-from .abstracts.AbstractCharcater import AbstractCharacter
+from .abs_class.AbstractModel import AbstractCharacter
 
 
 class Player(AbstractCharacter):

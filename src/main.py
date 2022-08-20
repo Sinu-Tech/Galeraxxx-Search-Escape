@@ -1,5 +1,4 @@
-from models.Player import Player
-from models.Enemy import Enemy
+from models import Cell, Enemy, Player
 
 
 if __name__ == "__main__":
@@ -7,6 +6,6 @@ if __name__ == "__main__":
     enemy1 = Enemy("Enemy1", 10, 10, 1.0)
 
     enemy1.update_maph(user.pos_x, user.pos_y)
-    # enemy1.print_maph()
+    enemy1.print_maph()
 
-    print(enemy1.get_expansions(user.pos_x, user.pos_y))
+    # print(enemy1.get_expansions(user.pos_x, user.pos_y))

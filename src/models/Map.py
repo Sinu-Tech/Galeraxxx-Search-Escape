@@ -1,5 +1,5 @@
 import numpy as np
-from enums.EnumMap import *
+from .enums.EnumMap import *
 
 map = np.array([[MAP_FREE]*20]*20)
 
