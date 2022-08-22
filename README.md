@@ -1,10 +1,8 @@
 # Galeraxxx-Search-Escape
 Jogo com algoritmo de busca para fuga de IA em labirinto
 
-Para rodar:
+## Etapas para executar o projeto
 
- ## Linux:
-  
   Baixar o repositório:
 ```cmd
 git clone https://github.com/Sinu-Tech/Galeraxxx-Search-Escape
