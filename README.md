@@ -5,39 +5,33 @@ Para rodar:
 
  ## Linux:
   
-  Primeira vez:
+  Baixar o repositório:
 ```cmd
 git clone https://github.com/Sinu-Tech/Galeraxxx-Search-Escape
-cd .\Galeraxxx-Search-Escape
-python -m venv env
+```
+ Entrar na pasta do repositório
+ ```cmd
+ cd .\Galeraxxx-Search-Escape
+ ```
+ Criar ambiente
+ ```cmd
+ python -m venv env
+ ```
+ Rodar o ambiente em Linux
+```cmd
 source env\bin\activate
-pip install -U -r .\requirements.txt
-python .\src\main.py
 ```
-  Próximas vezes:
+Rodar o ambiente em Windows
 ```cmd
-cd .\Galeraxxx-Search-Escape
-python .\src\main.py
-```
-
- ## Windows:
-  
-  Primeira vez:
-```cmd
-git clone https://github.com/Sinu-Tech/Galeraxxx-Search-Escape
-cd .\Galeraxxx-Search-Escape
-python -m venv env
 env\Scripts\activate.bat
-pip install -U -r .\requirements.txt
-python .\src\main.py
 ```
-  Próximas vezes:
+  Instalar ou atualizar dependências
 ```cmd
-cd .\Galeraxxx-Search-Escape
+pip install -U -r .\requirements.txt
+```
+Executar o projeto
+```cmd 
 python .\src\main.py
 ```
 
-### Para atualizar os pacotes:
-```cmd
-pip install -U -r .\requirements.txt
-```
+
