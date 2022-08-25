@@ -1,47 +1,49 @@
 from models import Enemy, Player
 from utils.map_utils import *
 from models.maps import *
-import keyboard 
+import keyboard
 
 if __name__ == "__main__":
 
-    user = Player("Player", 4, 4, 1.2)
-    enemy1 = Enemy("Enemy1", 0, 0, 1.0)
+    user = Player("Player", 1, 1, 1.2)
+    enemy1 = Enemy("Enemy1", 19, 19, 1.0)
 
-    path = enemy1.get_expansions(user.pos_x, user.pos_y)
+    # path = enemy1.get_expansions(user.pos_x, user.pos_y)
+    #
+    # print("path:")
+    # print(path.x, path.y)
+    # while path is not None:
+    #     path = path.expanded_by
+    #     if path is not None:
+    #         print(path.x, path.y)
 
-    print("path:")
-    print(path.x, path.y)
-    while path != None:
-        path = path.expanded_by
-        if path != None:
-            print(path.x, path.y)
-
-    print(game_map)
     # print_map_f(enemy1.map_bot)
     # print_map_g(enemy1.map_bot)
     # print_map_h(enemy1.map_bot)
 
-
-    while True:                                                                 
+    while True:
+        print(game_map)
         pressedKey = keyboard.read_key()
         if pressedKey == "a":
-            print("clicou em a")
-            if(user.pos_x >0):
-                print('move a')
-            
-        if pressedKey == "d":
-            print("clicou em d")
-            if(user.pos_x >width_map):
-                print('move d')
-            
-        if pressedKey == "w":
-            print("clicou em w")
-            if(user.pos_y >0):
-                print('move w')
-            
-        if pressedKey == "s":
-            print("clicou em s")
-            if(user.pos_y >height_map):
-                print('move s')
-                
+            if game_map[user.pos_x][user.pos_y - 1] == 0:
+                game_map[user.pos_x][user.pos_y - 1] = 3
+                game_map[user.pos_x][user.pos_y] = 0
+                user.pos_y = user.pos_y - 1
+
+        elif pressedKey == "d":
+            if game_map[user.pos_x][user.pos_y + 1] == 0:
+                game_map[user.pos_x][user.pos_y + 1] = 3
+                game_map[user.pos_x][user.pos_y] = 0
+                user.pos_y = user.pos_y + 1
+
+        elif pressedKey == "w":
+            if game_map[user.pos_x - 1][user.pos_y] == 0:
+                game_map[user.pos_x - 1][user.pos_y] = 3
+                game_map[user.pos_x][user.pos_y] = 0
+                user.pos_x = user.pos_x - 1
+
+        elif pressedKey == "s":
+            if game_map[user.pos_x + 1][user.pos_y] == 0:
+                game_map[user.pos_x + 1][user.pos_y] = 3
+                game_map[user.pos_x][user.pos_y] = 0
+                user.pos_x = user.pos_x + 1
