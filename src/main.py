@@ -25,25 +25,25 @@ if __name__ == "__main__":
         print(game_map)
         pressedKey = keyboard.read_key()
         if pressedKey == "a":
-            if game_map[user.pos_x][user.pos_y - 1] == 0:
-                game_map[user.pos_x][user.pos_y - 1] = 3
-                game_map[user.pos_x][user.pos_y] = 0
-                user.pos_y = user.pos_y - 1
-
-        elif pressedKey == "d":
-            if game_map[user.pos_x][user.pos_y + 1] == 0:
-                game_map[user.pos_x][user.pos_y + 1] = 3
-                game_map[user.pos_x][user.pos_y] = 0
-                user.pos_y = user.pos_y + 1
-
-        elif pressedKey == "w":
             if game_map[user.pos_x - 1][user.pos_y] == 0:
                 game_map[user.pos_x - 1][user.pos_y] = 3
                 game_map[user.pos_x][user.pos_y] = 0
                 user.pos_x = user.pos_x - 1
 
-        elif pressedKey == "s":
-            if game_map[user.pos_x + 1][user.pos_y] == 0:
-                game_map[user.pos_x + 1][user.pos_y] = 3
+        elif pressedKey == "d":
+            if game_map[user.pos_x + 1][user.pos_y + 1] == 0:
+                game_map[user.pos_x + 1][user.pos_y + 1] = 3
                 game_map[user.pos_x][user.pos_y] = 0
                 user.pos_x = user.pos_x + 1
+
+        elif pressedKey == "w":
+            if game_map[user.pos_x ][user.pos_y - 1] == 0:
+                game_map[user.pos_x][user.pos_y - 1] = 3
+                game_map[user.pos_x][user.pos_y] = 0
+                user.pos_y = user.pos_y - 1
+
+        elif pressedKey == "s":
+            if game_map[user.pos_x][user.pos_y + 1] == 0:
+                game_map[user.pos_x][user.pos_y + 1] = 3
+                game_map[user.pos_x][user.pos_y] = 0
+                user.pos_y = user.pos_y + 1
