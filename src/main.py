@@ -31,8 +31,8 @@ if __name__ == "__main__":
                 user.pos_x = user.pos_x - 1
 
         elif pressedKey == "d":
-            if game_map[user.pos_x + 1][user.pos_y + 1] == 0:
-                game_map[user.pos_x + 1][user.pos_y + 1] = 3
+            if game_map[user.pos_x + 1][user.pos_y] == 0:
+                game_map[user.pos_x + 1][user.pos_y] = 3
                 game_map[user.pos_x][user.pos_y] = 0
                 user.pos_x = user.pos_x + 1
 
@@ -47,3 +47,5 @@ if __name__ == "__main__":
                 game_map[user.pos_x][user.pos_y + 1] = 3
                 game_map[user.pos_x][user.pos_y] = 0
                 user.pos_y = user.pos_y + 1
+
+        print('\n')
