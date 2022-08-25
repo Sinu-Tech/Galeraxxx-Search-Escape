@@ -1,12 +1,15 @@
 from models import Enemy, Player
 from utils.map_utils import *
 from models.maps import *
-import keyboard
+import time
+import pygame
 
 if __name__ == "__main__":
-
-    user = Player("Player", 1, 1, 1.2)
+    user = Player("Player", 0, 0, 1.2)
     enemy1 = Enemy("Enemy1", 19, 19, 1.0)
+    pygame.init()
+    screen = pygame.display.set_mode((600, 400))    
+    clock = pygame.time.Clock()
 
     # path = enemy1.get_expansions(user.pos_x, user.pos_y)
     #
@@ -16,36 +19,36 @@ if __name__ == "__main__":
     #     path = path.expanded_by
     #     if path is not None:
     #         print(path.x, path.y)
-
     # print_map_f(enemy1.map_bot)
     # print_map_g(enemy1.map_bot)
     # print_map_h(enemy1.map_bot)
-
     while True:
-        print(game_map)
-        pressedKey = keyboard.read_key()
-        if pressedKey == "a":
-            if game_map[user.pos_x - 1][user.pos_y] == 0:
-                game_map[user.pos_x - 1][user.pos_y] = 3
-                game_map[user.pos_x][user.pos_y] = 0
-                user.pos_x = user.pos_x - 1
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if  event.key == pygame.K_a or event.key == pygame.K_LEFT:
+                    if user.pos_x - 1 >= 0 and game_map[user.pos_y][user.pos_x - 1] == 0:
+                        game_map[user.pos_y][user.pos_x - 1] = 2
+                        game_map[user.pos_y][user.pos_x] = 0
+                        user.pos_x = user.pos_x - 1
 
-        elif pressedKey == "d":
-            if game_map[user.pos_x + 1][user.pos_y] == 0:
-                game_map[user.pos_x + 1][user.pos_y] = 3
-                game_map[user.pos_x][user.pos_y] = 0
-                user.pos_x = user.pos_x + 1
+                elif  event.key == pygame.K_d or event.key == pygame.K_RIGHT:
+                    if user.pos_x + 1 < len(game_map) and game_map[user.pos_y][user.pos_x+1] == 0:
+                        game_map[user.pos_y][user.pos_x+1] = 2
+                        game_map[user.pos_y][user.pos_x] = 0
+                        user.pos_x = user.pos_x + 1
 
-        elif pressedKey == "w":
-            if game_map[user.pos_x ][user.pos_y - 1] == 0:
-                game_map[user.pos_x][user.pos_y - 1] = 3
-                game_map[user.pos_x][user.pos_y] = 0
-                user.pos_y = user.pos_y - 1
+                elif  event.key == pygame.K_w or event.key == pygame.K_UP:
+                    if user.pos_y - 1 >= 0 and game_map[user.pos_y-1][user.pos_x] == 0:
+                        game_map[user.pos_y-1][user.pos_x] = 2
+                        game_map[user.pos_y][user.pos_x] = 0
+                        user.pos_y = user.pos_y - 1
 
-        elif pressedKey == "s":
-            if game_map[user.pos_x][user.pos_y + 1] == 0:
-                game_map[user.pos_x][user.pos_y + 1] = 3
-                game_map[user.pos_x][user.pos_y] = 0
-                user.pos_y = user.pos_y + 1
 
-        print('\n')
+                elif event.key == pygame.K_s or event.key == pygame.K_DOWN:
+                    if user.pos_y + 1 < len(game_map) and game_map[user.pos_y+1][user.pos_x] == 0:
+                        game_map[user.pos_y+1][user.pos_x] = 2
+                        game_map[user.pos_y][user.pos_x] = 0
+                        user.pos_y = user.pos_y + 1
+                print(game_map)
+                
+
