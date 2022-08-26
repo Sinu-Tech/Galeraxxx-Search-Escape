@@ -25,13 +25,9 @@ class Enemy(AbstractCharacter):
         index = less_f_index(self.expansions)
 
         while len(self.expansions) > 0:
-            print(self.expansions[index].x,
-                  self.expansions[index].y, pos_xp, pos_yp)
             if self.expansions[index].x == pos_xp and self.expansions[index].y == pos_yp:
                 return self.expansions[index]
 
-            print(game_map)
-            print()
             # DOWN
             g = self.map_bot[x_aux][y_aux].g + 1
             if x_aux < len(game_map)-1 and (game_map[x_aux + 1][y_aux] == MAP_FREE or game_map[x_aux + 1][y_aux] == MAP_PLAYER) and self.map_bot[x_aux + 1][y_aux].was_visited == False:
@@ -68,7 +64,6 @@ class Enemy(AbstractCharacter):
 
             # Left
             if y_aux > 0 and (game_map[x_aux][y_aux - 1] == MAP_FREE or game_map[x_aux][y_aux-1] == MAP_PLAYER) and self.map_bot[x_aux][y_aux - 1].was_visited == False:
-                print("LEFT")
                 h = get_distance(x_aux, y_aux - 1, pos_xp, pos_yp)
                 f = g + h
                 self.map_bot[x_aux][y_aux - 1].h = h
