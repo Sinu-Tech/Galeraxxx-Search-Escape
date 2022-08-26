@@ -1,7 +1,15 @@
 import numpy as np
 
+from models.enums.EnumMap import MAP_PLAYER
 
-def less_h_index(expansions: list):
+def get_position(_map: np.array,_MAP_ENUM: int) -> tuple:
+    for x in range(len(_map)):
+        for y in range(len(_map)):
+            if _map[x][y] == _MAP_ENUM:
+                print(x,y)
+                return x, y
+
+def less_f_index(expansions: list):
     better_index = 0
     better_f = expansions[0].f
     for index, e in enumerate(expansions):
