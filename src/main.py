@@ -38,6 +38,35 @@ def update_screen():
             pygame.display.update()
 
 
+
+
+def debug(path):
+    #print_map_f(enemy1.map_bot)
+    #print_map_g(enemy1.map_bot)
+    #print_map_h(enemy1.map_bot)
+
+    lista_expansao = []
+
+    print("path:")
+    if path is not None:
+        lista_expansao.append((path.x, path.y))
+        print(path.x, path.y)
+    while path is not None:
+        path = path.expanded_by
+        if path is not None:
+            lista_expansao.append((path.x, path.y))
+            print(path.x, path.y)
+
+    print("ListaExpansao", lista_expansao)
+
+#COMMITEI A BRANCH -> BRANCH_THIAGO6 && CRASHA AO ANDAR PARA A DIREITA
+
+
+    tupla_escohas = (lista_expansao[0], lista_expansao[-1]) #para pegar qualquer posição da lista a cima é só escolher aqui
+
+    print("TuplaEscolhas", tupla_escohas)
+
+
 if __name__ == "__main__":
     pygame.init()
 
@@ -98,8 +127,16 @@ if __name__ == "__main__":
 
                 print("User x: ", user.pos_x, "User y: ", user.pos_y)
                 # print(game_map)
+                #path = algo
                 update_screen()
+
+                path = enemy1.get_expansions(user.pos_y, user.pos_x)
+                #print("Expanded:\n", path.expanded_by.x, path.expanded_by.y)
+                debug(path)
+
 
             elif event.type == pygame.QUIT:
                 pygame.display.quit()
                 pygame.quit()
+
+
