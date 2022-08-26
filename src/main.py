@@ -5,8 +5,8 @@ import pygame
 
 PLAYER_SPEED = 1.2
 ENEMY_SPEED = 1.0
-PLAYER_POS_X, PLAYER_POS_Y = get_position(game_map, MAP_PLAYER)
-ENEMY_POS_X, ENEMY_POS_Y = get_position(game_map, MAP_ENEMY)
+PLAYER_POS_Y, PLAYER_POS_X = get_position(game_map, MAP_PLAYER)
+ENEMY_POS_Y, ENEMY_POS_X = get_position(game_map, MAP_ENEMY)
 COLOR_GREY = (46, 46, 46)
 COLOR_BLUE = (0,200,255)
 COLOR_DARK_GREY = (169, 160, 181)
