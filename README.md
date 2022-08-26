@@ -1,5 +1,5 @@
 # Galeraxxx-Search-Escape
-Jogo com algoritmo de busca para fuga de IA em labirinto
+Jogo com algoritmo de busca A* para fuga de IA em labirinto
 
 ## Etapas para executar o projeto
 
