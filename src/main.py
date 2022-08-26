@@ -3,150 +3,103 @@ from utils.map_utils import *
 from models.maps import *
 import pygame
 
-from pygame.locals import *
+PLAYER_SPEED = 1.2
+ENEMY_SPEED = 1.0
+PLAYER_POS_X, PLAYER_POS_Y = get_position(game_map, MAP_PLAYER)
+ENEMY_POS_X, ENEMY_POS_Y = get_position(game_map, MAP_ENEMY)
+COLOR_GREY = (46, 46, 46)
+COLOR_BLUE = (0,200,255)
+COLOR_DARK_GREY = (169, 160, 181)
+COLOR_GREEN = (144, 238, 144)
+COLOR_RED = (255, 69, 0)
+PIXEL_SIZE = 30
+WIDTH_POSITION = len(game_map)*PIXEL_SIZE
+HEIGHT_POSITION = len(game_map)*PIXEL_SIZE
 
 
-if __name__ == "__main__":
-
-    player_pos_x, player_pos_y = get_position(game_map, MAP_PLAYER)
-    enemy_pos_x, enemy_pos_y = get_position(game_map, MAP_ENEMY)
-    player_speed = 1.2
-    enemy_speed = 1.0
-    user = Player("Player", player_pos_x, player_pos_y, player_speed)
-    enemy1 = Enemy("Enemy1", enemy_pos_x, enemy_pos_y, enemy_speed)
-
-    print("player x:", player_pos_x,"player y:", player_pos_y)
-    print("enemy x:",enemy_pos_x,"enemy y", enemy_pos_y)
-    print(game_map)
-    pygame.init()
-    screen = pygame.display.set_mode((600, 400))    
-    clock = pygame.time.Clock()
-
-    path = enemy1.get_expansions(user.pos_x, user.pos_y)
-    
-    print("path:")
-    print(path.x, path.y)
-    while path is not None:
-        path = path.expanded_by
-        if path is not None:
-            print(path.x, path.y)
-    print_map_f(enemy1.map_bot)
-    print_map_g(enemy1.map_bot)
-    print_map_h(enemy1.map_bot)
-
-    PIXEL_SIZE = 30
-    largura = len(game_map)*PIXEL_SIZE
-    altura = len(game_map)*PIXEL_SIZE
-    COLOR_GREY = (46, 46, 46)
-    COLOR_BLUE = (169, 160, 181)
-    COLOR_GREEN = (144, 238, 144)
-    COLOR_RED = (255, 69, 0)
-
-    tela = pygame.display.set_mode((largura, altura))
-    pygame.display.set_caption('Garelaxxx-IA')
-    clock = pygame.time.Clock()
-
-    while True:
-
-        # clock.tick(30)
-        tela.fill((13, 34, 43))
-        # for i in
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-            # if pygame.key.get_pressed()[K_a]:
-            #     x -= 10
-            # if pygame.key.get_pressed()[K_d]:
-            #     x += 10
-            # if pygame.key.get_pressed()[K_w]:
-            #     y -= 10
-            # if pygame.key.get_pressed()[K_s]:
-            #     y += 10
-
-            # if y > altura:
-            #     y = 0
-
-            # if y < 0:
-            #     y = 720
-
-            # if x > largura:
-            #     x = 0
-
-            # if x < 0:
-            #     x = 1280
-
-            alt = PIXEL_SIZE
-            larg = PIXEL_SIZE
-            for y in range(0, len(game_map)): 
-                for x in range(0, len(game_map)):
-                    pos_x = x*larg
-                    pos_y = y*alt
-                    if(game_map[y][x] == 2):
-                        pygame.draw.rect(tela, COLOR_GREEN, (pos_x, pos_y, larg, alt))
-                    elif (game_map[y][x] == 3):
-                        pygame.draw.rect(tela, COLOR_RED, (pos_x, pos_y, larg, alt))
-                    elif (game_map[y][x] == 1):
-                        pygame.draw.rect(tela, COLOR_BLUE, (pos_x, pos_y, larg, alt))
-                    elif (game_map[y][x] == 0):
-                        pygame.draw.rect(tela, COLOR_GREY, (pos_x, pos_y, larg, alt))
-
-            # player = pygame.draw.rect(tela, (26, 196, 57), (0, 0, 40, PIXEL_SIZE))
-            # player = pygame.draw.rect(tela, (255, 0, 0), (0, PIXEL_SIZE, 40, PIXEL_SIZE))
-
-            # garelax = pygame.draw.rect(
-            #     tela, (255, 0, 0), (garelaxx, garelayy, 40, PIXEL_SIZE))
-
-            # if player.colliderect(garelax) and lifes > 0:
-            #     garelaxx = randint(100, 1000)
-            #     garelayy = randint(30, 600)
-            #     lifes -= 1
-
-            # tela.blit(texto, (1100, 10))
+def update_screen():
+    for y in range(0, len(game_map)):
+        for x in range(0, len(game_map)):
+            pos_x = x*PIXEL_SIZE
+            pos_y = y*PIXEL_SIZE
+            if (game_map[y][x] == MAP_PLAYER):
+                pygame.draw.rect(screen, COLOR_GREEN,
+                                 (pos_x, pos_y, PIXEL_SIZE, PIXEL_SIZE))
+            elif (game_map[y][x] == MAP_ENEMY):
+                pygame.draw.rect(screen, COLOR_RED,
+                                 (pos_x, pos_y, PIXEL_SIZE, PIXEL_SIZE))
+            elif (game_map[y][x] == MAP_WALL):
+                pygame.draw.rect(screen, COLOR_BLUE,
+                                 (pos_x, pos_y, PIXEL_SIZE, PIXEL_SIZE))
+            elif (game_map[y][x] == MAP_FREE):
+                pygame.draw.rect(screen, COLOR_GREY,
+                                 (pos_x, pos_y, PIXEL_SIZE, PIXEL_SIZE))
 
             pygame.display.update()
 
-            # [[2, 0, 0, 0, 0],
-            #   [0, 1, 0, 1, 0],
-            #   [0, 0, 0, 1, 1],
-            #   [0, 1, 0, 1, 0],
-            #   [1, 1, 0, 0, 3]]
 
-    while True:
+if __name__ == "__main__":
+    pygame.init()
+
+    user = Player("Player", PLAYER_POS_X, PLAYER_POS_Y, PLAYER_SPEED)
+    enemy1 = Enemy("Enemy1", ENEMY_POS_X, ENEMY_POS_Y, ENEMY_SPEED)
+
+    path = enemy1.get_expansions(user.pos_x, user.pos_y)
+
+    # EU E THIAGO VAMOS USAR ISSO AMANHÃ!!!!
+    # print("path:")
+    # print(path.x, path.y)
+    # while path is not None:
+    #     path = path.expanded_by
+    #     if path is not None:
+    #         print(path.x, path.y)
+    # print_map_f(enemy1.map_bot)
+    # print_map_g(enemy1.map_bot)
+    # print_map_h(enemy1.map_bot)
+
+    screen = pygame.display.set_mode((WIDTH_POSITION, HEIGHT_POSITION))
+    pygame.display.set_caption('Garelaxxx-IA')
+    clock = pygame.time.Clock()
+    clock.tick(120)
+    screen.fill(COLOR_GREY)
+    update_screen()
+
+    print(game_map)
+    print("User x: ", user.pos_x, "User y: ", user.pos_y)
+
+    running = True
+    while running:
         for event in pygame.event.get():
-            
             if event.type == pygame.KEYDOWN:
 
-
-                if  event.key == pygame.K_a or event.key == pygame.K_LEFT:
-                    if user.pos_x - 1 >= 0 and game_map[user.pos_y][user.pos_x - 1] == 0:
-                        game_map[user.pos_y][user.pos_x - 1] = 2
-                        game_map[user.pos_y][user.pos_x] = 0
+                if event.key == pygame.K_a or event.key == pygame.K_LEFT:
+                    if user.pos_x - 1 >= 0 and game_map[user.pos_y][user.pos_x - 1] == MAP_FREE:
+                        game_map[user.pos_y][user.pos_x - 1] = MAP_PLAYER
+                        game_map[user.pos_y][user.pos_x] = MAP_FREE
                         user.pos_x = user.pos_x - 1
 
-                elif  event.key == pygame.K_d or event.key == pygame.K_RIGHT:
-                    if user.pos_x + 1 < len(game_map) and game_map[user.pos_y][user.pos_x+1] == 0:
-                        game_map[user.pos_y][user.pos_x+1] = 2
-                        game_map[user.pos_y][user.pos_x] = 0
+                elif event.key == pygame.K_d or event.key == pygame.K_RIGHT:
+                    if user.pos_x + 1 < len(game_map) and game_map[user.pos_y][user.pos_x+1] == MAP_FREE:
+                        game_map[user.pos_y][user.pos_x + 1] = MAP_PLAYER
+                        game_map[user.pos_y][user.pos_x] = MAP_FREE
                         user.pos_x = user.pos_x + 1
 
-                elif  event.key == pygame.K_w or event.key == pygame.K_UP:
-                    if user.pos_y - 1 >= 0 and game_map[user.pos_y-1][user.pos_x] == 0:
-                        game_map[user.pos_y-1][user.pos_x] = 2
-                        game_map[user.pos_y][user.pos_x] = 0
+                elif event.key == pygame.K_w or event.key == pygame.K_UP:
+                    if user.pos_y - 1 >= 0 and game_map[user.pos_y-1][user.pos_x] == MAP_FREE:
+                        game_map[user.pos_y-1][user.pos_x] = MAP_PLAYER
+                        game_map[user.pos_y][user.pos_x] = MAP_FREE
                         user.pos_y = user.pos_y - 1
 
                 elif event.key == pygame.K_s or event.key == pygame.K_DOWN:
-                    if user.pos_y + 1 < len(game_map) and game_map[user.pos_y+1][user.pos_x] == 0:
-                        game_map[user.pos_y+1][user.pos_x] = 2
-                        game_map[user.pos_y][user.pos_x] = 0
+                    if user.pos_y + 1 < len(game_map) and game_map[user.pos_y+1][user.pos_x] == MAP_FREE:
+                        game_map[user.pos_y+1][user.pos_x] = MAP_PLAYER
+                        game_map[user.pos_y][user.pos_x] = MAP_FREE
                         user.pos_y = user.pos_y + 1
 
-                
-                print(game_map)
+                print("User x: ", user.pos_x, "User y: ", user.pos_y)
+                # print(game_map)
+                update_screen()
+
             elif event.type == pygame.QUIT:
                 pygame.display.quit()
                 pygame.quit()
-                
-
-    
