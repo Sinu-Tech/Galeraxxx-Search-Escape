@@ -3,11 +3,10 @@ import numpy as np
 from models.enums.EnumMap import MAP_PLAYER
 
 def get_position(_map: np.array,_MAP_ENUM: int) -> tuple:
-    for x in range(len(_map)):
-        for y in range(len(_map)):
-            if _map[x][y] == _MAP_ENUM:
-                print(x,y)
-                return x, y
+    for y in range(len(_map)):
+        for x in range(len(_map)):
+            if _map[y][x] == _MAP_ENUM:
+                return y, x
 
 def less_f_index(expansions: list):
     better_index = 0
@@ -25,9 +24,9 @@ def get_distance(x_aux: int, y_aux: int, pos_xp: int, pos_yp: int):
 
 
 def print_visiteds(_map: np.array):
-    for x in _map:
-        for y in x:
-            if y.was_visited:
+    for y in _map:
+        for x in y:
+            if x.was_visited:
                 print(1, end=" ")
             else:
                 print(0, end=" ")
