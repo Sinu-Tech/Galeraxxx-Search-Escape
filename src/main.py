@@ -3,12 +3,14 @@ from utils.map_utils import *
 from models.maps import *
 import pygame
 
+
 PLAYER_SPEED = 1.2
 ENEMY_SPEED = 1.0
 PLAYER_POS_Y, PLAYER_POS_X = get_position(game_map, MAP_PLAYER)
-ENEMY_POS_Y, ENEMY_POS_X = get_position(game_map, MAP_ENEMY)
+ENEMY_POS_X, ENEMY_POS_Y = get_position(game_map, MAP_ENEMY)
+
 COLOR_GREY = (46, 46, 46)
-COLOR_BLUE = (0,200,255)
+COLOR_BLUE = (0, 200, 255)
 COLOR_DARK_GREY = (169, 160, 181)
 COLOR_GREEN = (144, 238, 144)
 COLOR_RED = (255, 69, 0)
@@ -38,24 +40,24 @@ def update_screen():
             pygame.display.update()
 
 
+def debug(path, enemy):
+    expansions = []    
+    if path != None:
+        expansions.append((path.y, path.x))
+
+    while path != None:
+        path = path.expanded_by
+        if path != None:
+            expansions.append((path.y, path.x))
+
+    return expansions[-2]
+        
+
 if __name__ == "__main__":
     pygame.init()
 
     user = Player("Player", PLAYER_POS_X, PLAYER_POS_Y, PLAYER_SPEED)
     enemy1 = Enemy("Enemy1", ENEMY_POS_X, ENEMY_POS_Y, ENEMY_SPEED)
-
-    path = enemy1.get_expansions(user.pos_x, user.pos_y)
-
-    # EU E THIAGO VAMOS USAR ISSO AMANHÃ!!!!
-    # print("path:")
-    # print(path.x, path.y)
-    # while path is not None:
-    #     path = path.expanded_by
-    #     if path is not None:
-    #         print(path.x, path.y)
-    # print_map_f(enemy1.map_bot)
-    # print_map_g(enemy1.map_bot)
-    # print_map_h(enemy1.map_bot)
 
     screen = pygame.display.set_mode((WIDTH_POSITION, HEIGHT_POSITION))
     pygame.display.set_caption('Garelaxxx-IA')
@@ -63,9 +65,6 @@ if __name__ == "__main__":
     clock.tick(120)
     screen.fill(COLOR_GREY)
     update_screen()
-
-    print(game_map)
-    print("User x: ", user.pos_x, "User y: ", user.pos_y)
 
     running = True
     while running:
@@ -96,10 +95,16 @@ if __name__ == "__main__":
                         game_map[user.pos_y][user.pos_x] = MAP_FREE
                         user.pos_y = user.pos_y + 1
 
-                print("User x: ", user.pos_x, "User y: ", user.pos_y)
-                # print(game_map)
+                path = enemy1.get_expansions(user.pos_x, user.pos_y)
+                game_map[enemy1.pos_x][enemy1.pos_y] = MAP_FREE
+                temp = debug(path,enemy1)
+                enemy1.pos_y = temp[1]
+                enemy1.pos_x = temp[0]
+                game_map[temp[0]][temp[1]] = MAP_ENEMY
+
                 update_screen()
 
             elif event.type == pygame.QUIT:
                 pygame.display.quit()
                 pygame.quit()
+
