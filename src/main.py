@@ -96,7 +96,6 @@ def game_over():
                     print("Botao Quit")
                     sys.exit()
 
-
 def debug(path):
     expansions = []    
     if path != None:
@@ -123,10 +122,19 @@ if __name__ == "__main__":
     screen.fill(COLOR_GREY)
     update_screen()
 
+    #musica de fundo
+    pygame.mixer.music.set_volume(0.1)
+    pygame.mixer.music.load('./src/data/cristais.mp3')
+    pygame.mixer.music.play(-1)
+    
+    #efeito sonoro do jogo
+    click = pygame.mixer.Sound('./src/data/click.wav')
+
     running = True
     while running:
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
+                click.play() #efeito sonoro do click
 
                 if event.key == pygame.K_a or event.key == pygame.K_LEFT:
                     if user.pos_x - 1 >= 0 and game_map[user.pos_y][user.pos_x - 1] == MAP_FREE:
