@@ -42,6 +42,17 @@ def update_screen():
 
             pygame.display.update()
 
+
+# deixei assim porque não faz diferença ja que nao to chamando na main
+def timer():
+
+    segundos = 0
+    while True: 
+        #print(segundos) #printando o tempo
+        time.sleep(1)    #esperando 1 segundo
+        segundos += 1    #incrementando o tempo
+               
+
 def game_over():
 
 
@@ -56,6 +67,7 @@ def game_over():
     text_color = (255,255,255)
     text_red = (227,38,54)
     color_dark = (0,0,0)
+
 
     # desenhando o texto GAMEOVER
     text = text_font.render('GAME OVER', True, text_red)
@@ -127,7 +139,6 @@ if __name__ == "__main__":
     while running:
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
-
                 if event.key == pygame.K_a or event.key == pygame.K_LEFT:
                     if user.pos_x - 1 >= 0 and game_map[user.pos_y][user.pos_x - 1] == MAP_FREE:
                         game_map[user.pos_y][user.pos_x - 1] = MAP_PLAYER
@@ -159,6 +170,7 @@ if __name__ == "__main__":
                 enemy1.pos_x = temp[0]
                 game_map[temp[0]][temp[1]] = MAP_ENEMY
 
+                
                 update_screen()
 
                 if user.pos_y == enemy1.pos_x and user.pos_x == enemy1.pos_y:
