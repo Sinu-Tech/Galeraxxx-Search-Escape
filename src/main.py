@@ -1,7 +1,10 @@
+import time
+
 from models import Enemy, Player
 from utils.map_utils import *
 from models.maps import *
 import pygame
+import sys
 
 
 PLAYER_SPEED = 1.2
@@ -39,8 +42,62 @@ def update_screen():
 
             pygame.display.update()
 
+def game_over():
 
-def debug(path, enemy):
+
+    width = screen.get_width()
+    height = screen.get_height()
+
+    #print("larg", width)
+    #print("altura", height)
+
+    text_font = pygame.font.SysFont('Corbel', 35)
+
+    text_color = (255,255,255)
+    text_red = (227,38,54)
+    color_dark = (0,0,0)
+
+    # desenhando o texto GAMEOVER
+    text = text_font.render('GAME OVER', True, text_red)
+    pygame.draw.rect(screen, color_dark, [width*0.2, height*0.05, 340, 30], border_radius=10)
+    screen.blit(text, (width*0.36, height*0.055))  # sobrepondo o  texto ao botão
+
+
+    text_font = pygame.font.SysFont('Corbel', 40)
+    # desenhando o botão restart
+    text = text_font.render('restart', True, text_color)
+    pygame.draw.rect(screen, color_dark, [width*0.02, height*0.9, 140, 30], border_radius=10)
+    screen.blit(text, (width*0.02+width*0.04, height*0.9))  # sobrepondo o  texto ao botão
+
+    #desenhando o botão quit
+    text = text_font.render('quit', True, text_color)
+    pygame.draw.rect(screen, color_dark, [width*0.75, height*0.9, 140, 30], border_radius=10)
+    screen.blit(text, (width*0.75+width*0.07, height*0.9)) #sobrepondo o  texto ao botão
+
+    pygame.display.update()
+    while(True):
+        for ev in pygame.event.get():
+            mouse = pygame.mouse.get_pos()
+
+            if ev.type == pygame.QUIT:
+                #print("QUITANDOO")
+                sys.exit()
+            if ev.type == pygame.MOUSEBUTTONDOWN:
+                #checando se foi clicado em restart
+                if 13 <= mouse[0] <= 148 and 544 <= mouse[1] <= 568:
+                    print("Botao Restart")
+                    #implementar aqui a lógica para restart
+                    #
+                    #
+                    #
+
+                #checando se foi clicando em quit
+                if 457 <= mouse[0] <= 586 and 544 <= mouse[1] <= 568:
+                    print("Botao Quit")
+                    sys.exit()
+
+
+def debug(path):
     expansions = []    
     if path != None:
         expansions.append((path.y, path.x))
@@ -97,12 +154,15 @@ if __name__ == "__main__":
 
                 path = enemy1.get_expansions(user.pos_x, user.pos_y)
                 game_map[enemy1.pos_x][enemy1.pos_y] = MAP_FREE
-                temp = debug(path,enemy1)
+                temp = debug(path)
                 enemy1.pos_y = temp[1]
                 enemy1.pos_x = temp[0]
                 game_map[temp[0]][temp[1]] = MAP_ENEMY
 
                 update_screen()
+
+                if user.pos_y == enemy1.pos_x and user.pos_x == enemy1.pos_y:
+                    game_over()
 
             elif event.type == pygame.QUIT:
                 pygame.display.quit()
