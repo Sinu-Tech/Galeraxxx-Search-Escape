@@ -1,12 +1,12 @@
 import numpy as np
 
-from models.enums.EnumMap import MAP_PLAYER
 
-def get_position(_map: np.array,_MAP_ENUM: int) -> tuple:
-    for y in range(len(_map)):
-        for x in range(len(_map)):
+def get_position(_map: np.array, _MAP_ENUM: int) -> tuple:
+    for y in range(0, len(_map)):
+        for x in range(0, len(_map)):
             if _map[y][x] == _MAP_ENUM:
                 return y, x
+
 
 def less_f_index(expansions: list):
     better_index = 0
@@ -55,3 +55,12 @@ def print_map_f(_map: np.array):
         for x in y:
             print(x.f, end=" ")
         print("")
+
+
+def generate_map_with_random_obstacles(_map: np.array, _obstacles_quantity: int):
+    for i in range(_obstacles_quantity):
+        x = np.random.randint(0, len(_map))
+        y = np.random.randint(0, len(_map))
+        selected_obstacle = np.random.randint(0, len(obstacle_list))
+        _map = obstacle_list[selected_obstacle](_map, x, y)
+    return _map
