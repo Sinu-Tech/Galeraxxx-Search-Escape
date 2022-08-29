@@ -87,8 +87,9 @@ map_4 = np.array([[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
                   [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
                   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]])
 
-map_list = [map_1, map_2, map_3, map_4]
 
-randomNumer = np.random.randint(0, len(map_list))
+def get_map():
+    map_list = [map_1, map_2, map_3, map_4]
+    return map_list[np.random.randint(0, len(map_list))]    
 
-game_map = map_list[randomNumer]
+game_map = get_map()
