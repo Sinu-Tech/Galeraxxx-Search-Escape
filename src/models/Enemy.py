@@ -35,7 +35,8 @@ class Enemy(AbstractCharacter):
             g = self.map_bot[y_aux][x_aux].g + 1
 
             # DOWN
-            if y_aux < len(game_map)-1 and (game_map[y_aux + 1][x_aux] == MAP_FREE or game_map[y_aux + 1][x_aux] == MAP_PLAYER) and self.map_bot[y_aux + 1][x_aux].was_visited == False:
+            if y_aux < len(game_map) - 1 and (game_map[y_aux + 1][x_aux] == MAP_FREE or game_map[y_aux + 1][x_aux] == MAP_PLAYER) and self.map_bot[y_aux + 1][
+                x_aux].was_visited == False:
                 h = get_distance(x_aux, y_aux + 1, pos_xp, pos_yp)
                 f = g + h
                 self.map_bot[y_aux + 1][x_aux].g = g
@@ -57,7 +58,8 @@ class Enemy(AbstractCharacter):
                     Cell(x_aux, y_aux - 1, f, g, h, True, self.expansions[index]))
 
             # Right
-            if x_aux < len(game_map)-1 and (game_map[y_aux][x_aux + 1] == MAP_FREE or game_map[y_aux][x_aux+1] == MAP_PLAYER) and self.map_bot[y_aux][x_aux + 1].was_visited == False:
+            if x_aux < len(game_map) - 1 and (game_map[y_aux][x_aux + 1] == MAP_FREE or game_map[y_aux][x_aux + 1] == MAP_PLAYER) and self.map_bot[y_aux][
+                x_aux + 1].was_visited == False:
                 h = get_distance(x_aux + 1, y_aux, pos_xp, pos_yp)
                 f = g + h
                 self.map_bot[y_aux][x_aux + 1].h = h
@@ -68,7 +70,7 @@ class Enemy(AbstractCharacter):
                     Cell(x_aux + 1, y_aux, f, g, h, True, self.expansions[index]))
 
             # Left
-            if x_aux > 0 and (game_map[y_aux][x_aux - 1] == MAP_FREE or game_map[y_aux][x_aux-1] == MAP_PLAYER) and self.map_bot[y_aux][x_aux - 1].was_visited == False:
+            if x_aux > 0 and (game_map[y_aux][x_aux - 1] == MAP_FREE or game_map[y_aux][x_aux - 1] == MAP_PLAYER) and self.map_bot[y_aux][x_aux - 1].was_visited == False:
                 h = get_distance(x_aux - 1, y_aux, pos_xp, pos_yp)
                 f = g + h
                 self.map_bot[y_aux][x_aux - 1].h = h
