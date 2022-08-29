@@ -56,11 +56,3 @@ def print_map_f(_map: np.array):
             print(x.f, end=" ")
         print("")
 
-
-def generate_map_with_random_obstacles(_map: np.array, _obstacles_quantity: int):
-    for i in range(_obstacles_quantity):
-        x = np.random.randint(0, len(_map))
-        y = np.random.randint(0, len(_map))
-        selected_obstacle = np.random.randint(0, len(obstacle_list))
-        _map = obstacle_list[selected_obstacle](_map, x, y)
-    return _map
