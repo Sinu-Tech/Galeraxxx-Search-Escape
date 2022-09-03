@@ -151,26 +151,26 @@ def pygame_start_game(player, enemy):
                     if player.pos_x - 1 >= 0 and game_map[player.pos_y][player.pos_x - 1] == MAP_FREE:
                         game_map[player.pos_y][player.pos_x - 1] = MAP_PLAYER
                         game_map[player.pos_y][player.pos_x] = MAP_FREE
-                        player.pos_x = player.pos_x - 1
+                        player.move("left")
 
                 elif event.key == pygame.K_d or event.key == pygame.K_RIGHT:
                     if player.pos_x + 1 < len(game_map) and game_map[player.pos_y][player.pos_x + 1] == MAP_FREE:
                         game_map[player.pos_y][player.pos_x + 1] = MAP_PLAYER
                         game_map[player.pos_y][player.pos_x] = MAP_FREE
                         player.pos_x = player.pos_x + 1
+                        player.move("rigth")
 
                 elif event.key == pygame.K_w or event.key == pygame.K_UP:
                     if player.pos_y - 1 >= 0 and game_map[player.pos_y - 1][player.pos_x] == MAP_FREE:
                         game_map[player.pos_y - 1][player.pos_x] = MAP_PLAYER
                         game_map[player.pos_y][player.pos_x] = MAP_FREE
-                        player.pos_y = player.pos_y - 1
+                        player.move("up")
 
                 elif event.key == pygame.K_s or event.key == pygame.K_DOWN:
                     if player.pos_y + 1 < len(game_map) and game_map[player.pos_y + 1][player.pos_x] == MAP_FREE:
                         game_map[player.pos_y + 1][player.pos_x] = MAP_PLAYER
                         game_map[player.pos_y][player.pos_x] = MAP_FREE
-                        player.pos_y = player.pos_y + 1
-                        #player.move("down")
+                        player.move("down")
 
                 enemy_decision(player,enemy)
                 render_screen()
