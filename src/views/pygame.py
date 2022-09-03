@@ -134,8 +134,8 @@ def enemy_decision(player,enemy):
     decision = path[-2]
     enemy.pos_y = decision[1]
     enemy.pos_x = decision[0]
+    
     game_map[decision[0]][decision[1]] = MAP_ENEMY
-
 
 
 def pygame_start_game(player, enemy):
