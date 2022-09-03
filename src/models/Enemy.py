@@ -8,8 +8,8 @@ import time
 
 
 class Enemy(AbstractCharacter):
-    def __init__(self, name: str, pos_x: int, pos_y: int, speed: float):
-        super().__init__(name, pos_x, pos_y, speed)
+    def __init__(self, name: str, pos_x: int, pos_y: int):
+        super().__init__(name, pos_x, pos_y)
 
     def reset(self):
         self.map_bot = []
