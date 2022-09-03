@@ -5,8 +5,6 @@ import pygame
 import sys
 
 
-PLAYER_SPEED = 1.2
-ENEMY_SPEED = 1.0
 PLAYER_POS_Y, PLAYER_POS_X = get_position(game_map, MAP_PLAYER)
 ENEMY_POS_X, ENEMY_POS_Y = get_position(game_map, MAP_ENEMY)
 
@@ -48,7 +46,6 @@ def render_screen():
             elif game_map[y][x] == MAP_FREE:
                 pygame.draw.rect(screen, COLOR_GREY,
                                  (pos_x, pos_y, PIXEL_SIZE, PIXEL_SIZE))
-
             pygame.display.update()
 
 def reset_game(player,enemy):
@@ -173,6 +170,7 @@ def pygame_start_game(player, enemy):
                         game_map[player.pos_y + 1][player.pos_x] = MAP_PLAYER
                         game_map[player.pos_y][player.pos_x] = MAP_FREE
                         player.pos_y = player.pos_y + 1
+                        #player.move("down")
 
                 enemy_decision(player,enemy)
                 render_screen()
