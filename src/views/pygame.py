@@ -25,9 +25,9 @@ clock = pygame.time.Clock()
 clock.tick(120)
 screen.fill(COLOR_GREY)
 pygame.mixer.music.set_volume(0.1)
-pygame.mixer.music.load('./src/data/cristais.mp3')
+pygame.mixer.music.load('./data/cristais.mp3') #./src/data/cristais.mp3
 pygame.mixer.music.play(-1)
-click = pygame.mixer.Sound('./src/data/click.wav')
+click = pygame.mixer.Sound('./data/click.wav') #./src/data/click.wav
 
 def render_screen():
     for y in range(0, len(game_map)):
@@ -73,26 +73,15 @@ def game_over(player,enemy):
 
     text_font = pygame.font.SysFont('Corbel', 35)
 
-    text_color = (255, 255, 255)
-    text_red = (227, 38, 54)
     color_dark = (0, 0, 0)
+    text_blue = (77,77,255)
 
     # desenhando o texto GAMEOVER
-    text = text_font.render('GAME OVER', True, text_red)
-    pygame.draw.rect(screen, color_dark, [width * 0.2, height * 0.05, 340, 30], border_radius=10)
-    screen.blit(text, (width * 0.36, height * 0.055))  # sobrepondo o  texto ao botão
+    text = text_font.render('Obrigado por jogar', True, text_blue)
+    pygame.draw.rect(screen, color_dark, [width * 0.21, height * 0.04, 360, 48], border_radius=12)
+    screen.blit(text, (width * 0.29, height * 0.05))  # sobrepondo o  texto ao botão
 
-    text_font = pygame.font.SysFont('Corbel', 40)
-    # desenhando o botão restart
-    text = text_font.render('restart', True, text_color)
-    pygame.draw.rect(screen, color_dark, [width * 0.02, height * 0.9, 140, 30], border_radius=10)
-    screen.blit(text, (width * 0.02 + width * 0.04, height * 0.9))  # sobrepondo o  texto ao botão
-
-    # desenhando o botão quit
-    text = text_font.render('quit', True, text_color)
-    pygame.draw.rect(screen, color_dark, [width * 0.75, height * 0.9, 140, 30], border_radius=10)
-    screen.blit(text, (width * 0.75 + width * 0.07, height * 0.9))  # sobrepondo o  texto ao botão
-
+   
 
 
     pygame.display.update()
@@ -134,7 +123,7 @@ def enemy_decision(player,enemy):
     decision = path[-2]
     enemy.pos_y = decision[1]
     enemy.pos_x = decision[0]
-    
+
     game_map[decision[0]][decision[1]] = MAP_ENEMY
 
 
