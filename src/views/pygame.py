@@ -25,9 +25,9 @@ clock = pygame.time.Clock()
 clock.tick(120)
 screen.fill(COLOR_GREY)
 pygame.mixer.music.set_volume(0.1)
-pygame.mixer.music.load('./data/cristais.mp3') #./src/data/cristais.mp3
+pygame.mixer.music.load('./src/data/cristais.mp3')
 pygame.mixer.music.play(-1)
-click = pygame.mixer.Sound('./data/click.wav') #./src/data/click.wav
+click = pygame.mixer.Sound('./src/data/click.wav')
 
 def render_screen():
     for y in range(0, len(game_map)):
