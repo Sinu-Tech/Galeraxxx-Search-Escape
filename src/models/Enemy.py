@@ -4,7 +4,6 @@ from .Cell import *
 from .enums.EnumMap import *
 from .maps import *
 from utils import *
-import time
 
 
 class Enemy(AbstractCharacter):
