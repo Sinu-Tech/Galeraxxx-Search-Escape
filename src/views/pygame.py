@@ -64,7 +64,7 @@ def exit_game():
     exit()
 
 
-def game_over(player, enemy):
+def game_over():
     width = screen.get_width()
     height = screen.get_height()
 
@@ -72,12 +72,12 @@ def game_over(player, enemy):
 
     # desenhando o texto GAMEOVER
     text = text_font.render('Obrigado por jogar', True, COLOR_WHITE)
-    pygame.draw.rect(screen, COLOR_BLACK, [
-                     width * 0.18, height * 0.04, 360, 48], border_radius=4)
+    pygame.draw.rect(screen, COLOR_BLACK, [width * 0.18, height * 0.04, 360, 48], border_radius=4)
     # sobrepondo o  texto ao botão
     screen.blit(text, (width * 0.29, height * 0.05))
 
     pygame.display.update()
+
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -105,6 +105,13 @@ def enemy_decision(player, enemy):
     game_map[decision[0]][decision[1]] = MAP_ENEMY
 
 
+def player_move_event_draw(x_to,y_to,x_from,y_from):
+        game_map[y_to][x_to] = MAP_PLAYER
+        draw(x_to, y_to,  COLOR_GREEN)
+        game_map[y_from][x_from] = MAP_FREE
+        draw(x_from, y_from,  COLOR_GREY)
+
+
 def pygame_start_game(player, enemy):
 
     first_render_screen()
@@ -114,47 +121,35 @@ def pygame_start_game(player, enemy):
             if event.type == pygame.KEYDOWN:
                 click.play()  # efeito sonoro do click
 
+
                 if event.key == pygame.K_a or event.key == pygame.K_LEFT:
                     if player.pos_x - 1 >= 0 and game_map[player.pos_y][player.pos_x - 1] == MAP_FREE:
-                        game_map[player.pos_y][player.pos_x - 1] = MAP_PLAYER
-                        draw(player.pos_x - 1, player.pos_y,  COLOR_GREEN)
-                        game_map[player.pos_y][player.pos_x] = MAP_FREE
-                        draw(player.pos_x, player.pos_y,  COLOR_GREY)
+                        player_move_event_draw(player.pos_x - 1, player.pos_y, player.pos_x, player.pos_y)
                         player.move("left")
-
-                elif event.key == pygame.K_d or event.key == pygame.K_RIGHT:
+                
+                if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
                     if player.pos_x + 1 < len(game_map) and game_map[player.pos_y][player.pos_x + 1] == MAP_FREE:
-                        game_map[player.pos_y][player.pos_x + 1] = MAP_PLAYER
-                        draw(player.pos_x + 1, player.pos_y,  COLOR_GREEN)
-                        game_map[player.pos_y][player.pos_x] = MAP_FREE
-                        draw(player.pos_x, player.pos_y,  COLOR_GREY)
-                        player.pos_x = player.pos_x + 1
-                        player.move("rigth")
+                        player_move_event_draw(player.pos_x + 1, player.pos_y, player.pos_x, player.pos_y)
+                        player.move("right")
 
-                elif event.key == pygame.K_w or event.key == pygame.K_UP:
+                if event.key == pygame.K_w or event.key == pygame.K_UP:
                     if player.pos_y - 1 >= 0 and game_map[player.pos_y - 1][player.pos_x] == MAP_FREE:
-
-                        game_map[player.pos_y - 1][player.pos_x] = MAP_PLAYER
-                        draw(player.pos_x, player.pos_y - 1,  COLOR_GREEN)
-                        game_map[player.pos_y][player.pos_x] = MAP_FREE
-                        draw(player.pos_x, player.pos_y,  COLOR_GREY)
+                        player_move_event_draw(player.pos_x, player.pos_y - 1, player.pos_x, player.pos_y)
                         player.move("up")
 
-                elif event.key == pygame.K_s or event.key == pygame.K_DOWN:
+                if event.key == pygame.K_s or event.key == pygame.K_DOWN:
                     if player.pos_y + 1 < len(game_map) and game_map[player.pos_y + 1][player.pos_x] == MAP_FREE:
-                        game_map[player.pos_y + 1][player.pos_x] = MAP_PLAYER
-                        draw(player.pos_x, player.pos_y + 1,  COLOR_GREEN)
-                        game_map[player.pos_y][player.pos_x] = MAP_FREE
-                        draw(player.pos_x, player.pos_y,  COLOR_GREY)
+                        player_move_event_draw(player.pos_x, player.pos_y + 1, player.pos_x, player.pos_y)
                         player.move("down")
-
+                
+                
                 draw(enemy.pos_y, enemy.pos_x,  COLOR_GREY)
                 enemy_decision(player, enemy)
                 draw(enemy.pos_y, enemy.pos_x,  COLOR_RED)
                 pygame.display.update()
 
                 if player.pos_y == enemy.pos_x and player.pos_x == enemy.pos_y:
-                    game_over(player, enemy)
+                    game_over()
 
             elif event.type == pygame.QUIT:
                 exit_game()
